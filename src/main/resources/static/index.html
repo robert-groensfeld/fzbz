@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
+  <title>Fizz Buzz</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-material"></script>
+  <style>
+    .number {
+      width: 3em;
+      height: 3em;
+      text-align: center;
+      padding-top: 1em;
+      margin: .3em;
+    }
+
+    .numbers {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: center;
+    }
+  </style>
+</head>
+<body>
+<md-app id="app">
+  <md-app-toolbar class="md-primary">
+    <span class="md-title">Fizz Buzz</span>
+  </md-app-toolbar>
+
+  <md-app-content>
+  <div class="md-layout">
+    <div class="md-layout-item">
+      <md-field>
+          <label>Count to</label>
+          <md-input v-model="count" autofocus v-on:keyup.enter="fizz"></md-input>
+      </md-field>
+    </div>
+    <div class="md-layout-item">
+      <md-button class="md-raised md-primary" v-on:click="fizz">Count</md-button>
+    </div>
+  </div>
+  <div class="numbers">
+    <div v-for="number in numbers" class="md-elevation-10 md-display-3 number">
+      <span v-if="number !== 'fizz buzz'">{{number}}</span>
+      <span v-else=>FZBZ</span>
+    </div>
+  </div>
+
+  </md-app-content>
+</md-app>
+<script>
+  Vue.use(VueMaterial.default)
+  var app = new Vue({
+    el: '#app',
+    data: {
+      title: 'Fizz Buzz',
+      count: null,
+      numbers: null
+    },
+    mounted() {
+    },
+    methods: {
+      fizz: function() {
+        fetch(`/fizzbuzz/${this.count}`, {
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
+          .then(r => r.json())
+          .then(d => this.numbers = d.numbers)
+      }
+    }
+  })
+</script>
+</body>
+</html>
